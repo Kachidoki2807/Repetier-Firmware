@@ -144,8 +144,8 @@ void NunchukClass::interp(const t_InterpAxis axis, byte in, float &feedrate, int
         float   feedrate;
     } moveLengthTable[MAX_INTERP_AXIS] = {
         [INTERP_X_AXIS] = { .below = -X_MAX_LENGTH, .above =  X_MAX_LENGTH, .feedrate = 50.0},
-        [INTERP_Y_AXIS] = { .below =  Y_MAX_LENGTH, .above = -Y_MAX_LENGTH, .feedrate = 50.0},
-        [INTERP_Z_AXIS] = { .below =  Z_MAX_LENGTH, .above = -Z_MAX_LENGTH, .feedrate = 10.0},
+        [INTERP_Y_AXIS] = { .below = -Y_MAX_LENGTH, .above =  Y_MAX_LENGTH, .feedrate = 50.0},
+        [INTERP_Z_AXIS] = { .below = -Z_MAX_LENGTH, .above =  Z_MAX_LENGTH, .feedrate = 10.0},
     };
 
     if(axis < MAX_INTERP_AXIS) {
