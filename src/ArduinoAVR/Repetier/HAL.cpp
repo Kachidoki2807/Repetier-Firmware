@@ -1115,7 +1115,7 @@ inline void rf_store_char(unsigned char c, ring_buffer *buffer) {
         buffer->head = i;
     }
 }
-#if !defined(USART0_RX_vect) && defined(USART1_RX_vect)
+#if !defined(USART2_RX_vect) && defined(USART1_RX_vect)
 // do nothing - on the 32u4 the first USART is USART1
 #else
 void rfSerialEvent() __attribute__((weak));
@@ -1123,11 +1123,11 @@ void rfSerialEvent() {}
 #define serialEvent_implemented
 #if defined(USART_RX_vect)
 SIGNAL(USART_RX_vect)
-#elif defined(USART0_RX_vect)
-SIGNAL(USART0_RX_vect)
+#elif defined(USART2_RX_vect)
+SIGNAL(USART2_RX_vect)
 #else
-#if defined(SIG_USART0_RECV)
-SIGNAL(SIG_USART0_RECV)
+#if defined(SIG_USART2_RECV)
+SIGNAL(SIG_USART2_RECV)
 #elif defined(SIG_UART0_RECV)
 SIGNAL(SIG_UART0_RECV)
 #elif defined(SIG_UART_RECV)
@@ -1137,8 +1137,8 @@ SIGNAL(SIG_UART_RECV)
 #endif
 #endif
 {
-#if defined(UDR0)
-    uint8_t c  =  UDR0;
+#if defined(UDR2)
+    uint8_t c  =  UDR2;
 #elif defined(UDR)
     uint8_t c  =  UDR;
 #else
@@ -1148,34 +1148,34 @@ SIGNAL(SIG_UART_RECV)
 }
 #endif
 
-#if !defined(USART0_UDRE_vect) && defined(USART1_UDRE_vect)
+#if !defined(USART2_UDRE_vect) && defined(USART1_UDRE_vect)
 // do nothing - on the 32u4 the first USART is USART1
 #else
-#if !defined(UART0_UDRE_vect) && !defined(UART_UDRE_vect) && !defined(USART0_UDRE_vect) && !defined(USART_UDRE_vect)
+#if !defined(UART0_UDRE_vect) && !defined(UART_UDRE_vect) && !defined(USART2_UDRE_vect) && !defined(USART_UDRE_vect)
 #error "Don't know what the Data Register Empty vector is called for the first UART"
 #else
 #if defined(UART0_UDRE_vect)
 ISR(UART0_UDRE_vect)
 #elif defined(UART_UDRE_vect)
 ISR(UART_UDRE_vect)
-#elif defined(USART0_UDRE_vect)
-ISR(USART0_UDRE_vect)
+#elif defined(USART2_UDRE_vect)
+ISR(USART2_UDRE_vect)
 #elif defined(USART_UDRE_vect)
 ISR(USART_UDRE_vect)
 #endif
 {
     if (tx_buffer.head == tx_buffer.tail) {
         // Buffer empty, so disable interrupts
-#if defined(UCSR0B)
-        bit_clear(UCSR0B, UDRIE0);
+#if defined(UCSR2B)
+        bit_clear(UCSR2B, UDRIE2);
 #else
         bit_clear(UCSRB, UDRIE);
 #endif
     } else {
         // There is more data in the output buffer. Send the next byte
         uint8_t c = tx_buffer.buffer[tx_buffer.tail];
-#if defined(UDR0)
-        UDR0 = c;
+#if defined(UDR2)
+        UDR2 = c;
 #elif defined(UDR)
         UDR = c;
 #else
@@ -1415,8 +1415,8 @@ RFHardwareSerial::write(uint8_t c) {
 
 #if defined(UBRRH) && defined(UBRRL)
 RFHardwareSerial RFSerial(&rx_buffer, &tx_buffer, &UBRRH, &UBRRL, &UCSRA, &UCSRB, &UDR, RXEN, TXEN, RXCIE, UDRIE, U2X);
-#elif defined(UBRR0H) && defined(UBRR0L)
-RFHardwareSerial RFSerial(&rx_buffer, &tx_buffer, &UBRR0H, &UBRR0L, &UCSR0A, &UCSR0B, &UDR0, RXEN0, TXEN0, RXCIE0, UDRIE0, U2X0);
+#elif defined(UBRR2H) && defined(UBRR2L)
+RFHardwareSerial RFSerial(&rx_buffer, &tx_buffer, &UBRR2H, &UBRR2L, &UCSR2A, &UCSR2B, &UDR2, RXEN2, TXEN2, RXCIE2, UDRIE2, U2X2);
 #elif defined(USBCON)
 // do nothing - Serial object and buffers are initialized in CDC code
 #else

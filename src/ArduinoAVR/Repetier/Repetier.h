@@ -1114,4 +1114,6 @@ class PlaneBuilder {
 // must be after CustomEvents as it might include definitions from there
 #include "DisplayList.h"
 
+#include "Nunchuk.h"
+
 #endif
