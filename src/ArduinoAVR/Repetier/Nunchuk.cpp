@@ -52,66 +52,69 @@ void NunchukDeviceClass::loop() {
             Wire.beginTransmission(NUNCHUK_DEVICE_ADDR);
             Wire.write(0x00);
             Wire.endTransmission();
-            nexttime = curtime + 5U;        // The data will be avaiable into 5ms
+            nexttime = curtime + 5U;        // The data will be available into 5ms
             state++;
             break;
 
         case 7U:     // Read the results
-            byte index = 0;
             byte raw[6];
 
-            Wire.requestFrom(NUNCHUK_DEVICE_ADDR, 6);
+            Wire.requestFrom(NUNCHUK_DEVICE_ADDR, 6, true);
 
-            while((Wire.available() > 0) && (index < 6)) {
-                raw[index++] = Wire.read();
-            }
+            if(Wire.available() == 6) {
+                byte index = 0;
+    
+                while(index < 6) {
+                    raw[index++] = Wire.read();
+                }
 
-            /* Data parsing */
-            byte joyX   =   raw[0];
-            byte joyY   =   raw[1];
+                /* Data parsing */
+                byte joyX   =   raw[0];
+                byte joyY   =   raw[1];
 #ifdef NUNCHUK_DEVICE_ENABLE_ACCEL
-            int  accelX =  (raw[2] << 2) | ((raw[5] >> 2) & 0x03);
-            int  accelY =  (raw[3] << 2) | ((raw[5] >> 4) & 0x03);
-            int  accelZ =  (raw[4] << 2) | ((raw[5] >> 6) & 0x03);
+                int  accelX =  (raw[2] << 2) | ((raw[5] >> 2) & 0x03);
+                int  accelY =  (raw[3] << 2) | ((raw[5] >> 4) & 0x03);
+                int  accelZ =  (raw[4] << 2) | ((raw[5] >> 6) & 0x03);
 #endif
-            bool btnZ   = ((raw[5] >> 0) & 0x01) ^ 0x01;
-            bool btnC   = ((raw[5] >> 1) & 0x01) ^ 0x01;
+                bool btnZ   = ((raw[5] >> 0) & 0x01) ^ 0x01;
+                bool btnC   = ((raw[5] >> 1) & 0x01) ^ 0x01;
 
-            if(this->joyX != joyX) {
-                this->joyX = joyX;
-                newData = true;
-            }
+                if(this->joyX != joyX) {
+                    this->joyX = joyX;
+                    newData = true;
+                }
 
-            if(this->joyY != joyY) {
-                this->joyY = joyY;
-                newData = true;
-            }
+                if(this->joyY != joyY) {
+                    this->joyY = joyY;
+                    newData = true;
+                }
 
 #ifdef NUNCHUK_DEVICE_ENABLE_ACCEL
-            if(this->accelX != accelX) {
-                this->accelX = accelX;
-                newData = true;
-            }
+                if(this->accelX != accelX) {
+                    this->accelX = accelX;
+                    newData = true;
+                }
 
-            if(this->accelY != accelY) {
-                this->accelY = accelY;
-                newData = true;
-            }
+                if(this->accelY != accelY) {
+                    this->accelY = accelY;
+                    newData = true;
+                }
 
-            if(this->accelZ != accelZ) {
-                this->accelZ = accelZ;
-                newData = true;
-            }
+                if(this->accelZ != accelZ) {
+                    this->accelZ = accelZ;
+                    newData = true;
+                }
 #endif
 
-            if(this->btnZ != btnZ) {
-                this->btnZ = btnZ;
-                newData = true;
-            }
+                if(this->btnZ != btnZ) {
+                    this->btnZ = btnZ;
+                    newData = true;
+                }
 
-            if(this->btnC != btnC) {
-                this->btnC = btnC;
-                newData = true;
+                if(this->btnC != btnC) {
+                    this->btnC = btnC;
+                    newData = true;
+                }
             }
 
             nexttime = curtime + 100U;      // Next loop in 100ms
@@ -200,7 +203,6 @@ void NunchukClass::loop() {
         stopJog();
         PrintLine::resetPathPlanner();
         Printer::kill(true);    // Stop moving and disable steppers
-//        Printer::setOrigin(Printer::currentPosition[X_AXIS], Printer::currentPosition[Y_AXIS], Printer::currentPosition[Z_AXIS]);
         return;
     }
 
