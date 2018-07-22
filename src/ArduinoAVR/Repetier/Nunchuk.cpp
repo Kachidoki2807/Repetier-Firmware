@@ -189,6 +189,12 @@ void NunchukClass::init() {
 }
 
 void NunchukClass::loop() {
+
+    // If printing or milling, skip all
+    if(Printer::isPrinting()) {
+        return;
+    }
+
     NunchukDevice.loop();
 
     if(!NunchukDevice.hasNewData()) {
