@@ -249,7 +249,7 @@ It also can add a delay to wait for spindle to run on full speed.
 #define MIN_HARDWARE_ENDSTOP_Y true
 #define ENDSTOP_PULLUP_Z_MIN true
 #define ENDSTOP_Z_MIN_INVERTING true
-#define MIN_HARDWARE_ENDSTOP_Z true
+#define MIN_HARDWARE_ENDSTOP_Z false
 #define ENDSTOP_PULLUP_Z2_MINMAX true
 #define ENDSTOP_Z2_MINMAX_INVERTING false
 #define MINMAX_HARDWARE_ENDSTOP_Z2 false
@@ -303,7 +303,7 @@ It also can add a delay to wait for spindle to run on full speed.
 #define ENDSTOP_X_BACK_ON_HOME 0
 #define ENDSTOP_Y_BACK_ON_HOME 0
 #define ENDSTOP_Z_BACK_ON_HOME 0
-#define ALWAYS_CHECK_ENDSTOPS 0
+#define ALWAYS_CHECK_ENDSTOPS 1
 #define MOVE_X_WHEN_HOMED 0
 #define MOVE_Y_WHEN_HOMED 0
 #define MOVE_Z_WHEN_HOMED 0
@@ -370,12 +370,12 @@ It also can add a delay to wait for spindle to run on full speed.
 #define DELTASEGMENTS_PER_PRINTLINE 24
 #define STEPPER_INACTIVE_TIME 1000L
 #define MAX_INACTIVE_TIME 0L
-#define MAX_FEEDRATE_X 100
-#define MAX_FEEDRATE_Y 100
-#define MAX_FEEDRATE_Z 6
-#define HOMING_FEEDRATE_X 50
-#define HOMING_FEEDRATE_Y 50
-#define HOMING_FEEDRATE_Z 8
+#define MAX_FEEDRATE_X 180
+#define MAX_FEEDRATE_Y 180
+#define MAX_FEEDRATE_Z 20
+#define HOMING_FEEDRATE_X 100
+#define HOMING_FEEDRATE_Y 100
+#define HOMING_FEEDRATE_Z 10
 #define HOMING_ORDER HOME_ORDER_ZXY
 #define ZHOME_PRE_RAISE 0
 #define ZHOME_PRE_RAISE_DISTANCE 10
@@ -395,17 +395,17 @@ It also can add a delay to wait for spindle to run on full speed.
 #define STEP_DOUBLER_FREQUENCY 12000
 #define ALLOW_QUADSTEPPING 1
 #define DOUBLE_STEP_DELAY 0 // time in microseconds
-#define MAX_ACCELERATION_UNITS_PER_SQ_SECOND_X 100
-#define MAX_ACCELERATION_UNITS_PER_SQ_SECOND_Y 100
-#define MAX_ACCELERATION_UNITS_PER_SQ_SECOND_Z 20
-#define MAX_TRAVEL_ACCELERATION_UNITS_PER_SQ_SECOND_X 150
-#define MAX_TRAVEL_ACCELERATION_UNITS_PER_SQ_SECOND_Y 150
-#define MAX_TRAVEL_ACCELERATION_UNITS_PER_SQ_SECOND_Z 30
+#define MAX_ACCELERATION_UNITS_PER_SQ_SECOND_X 200
+#define MAX_ACCELERATION_UNITS_PER_SQ_SECOND_Y 200
+#define MAX_ACCELERATION_UNITS_PER_SQ_SECOND_Z 100
+#define MAX_TRAVEL_ACCELERATION_UNITS_PER_SQ_SECOND_X 200
+#define MAX_TRAVEL_ACCELERATION_UNITS_PER_SQ_SECOND_Y 200
+#define MAX_TRAVEL_ACCELERATION_UNITS_PER_SQ_SECOND_Z 100
 #define INTERPOLATE_ACCELERATION_WITH_Z 0
 #define ACCELERATION_FACTOR_TOP 100
-#define MAX_JERK 4
-#define MAX_ZJERK 0.4
-#define PRINTLINE_CACHE_SIZE 16
+#define MAX_JERK 8
+#define MAX_ZJERK 1
+#define PRINTLINE_CACHE_SIZE 32
 #define MOVE_CACHE_LOW 10
 #define LOW_TICKS_PER_MOVE 250000
 #define EXTRUDER_SWITCH_XY_SPEED 100
@@ -476,15 +476,15 @@ WARNING: Servos can draw a considerable amount of current. Make sure your system
 
 // #################### Z-Probing #####################
 
-#define Z_PROBE_Z_OFFSET 0
+#define Z_PROBE_Z_OFFSET 1
 #define Z_PROBE_Z_OFFSET_MODE 0
 #define UI_BED_COATING 1
-#define FEATURE_Z_PROBE 0
-#define EXTRUDER_IS_Z_PROBE 0
+#define FEATURE_Z_PROBE 1
+#define EXTRUDER_IS_Z_PROBE 1
 #define Z_PROBE_DISABLE_HEATERS 0
 #define Z_PROBE_BED_DISTANCE 10
-#define Z_PROBE_PIN -1
-#define Z_PROBE_PULLUP 0
+#define Z_PROBE_PIN 18 //ORIG_Z_MIN_PIN
+#define Z_PROBE_PULLUP 1
 #define Z_PROBE_ON_HIGH 0
 #define Z_PROBE_X_OFFSET 0
 #define Z_PROBE_Y_OFFSET 0
@@ -493,7 +493,7 @@ WARNING: Servos can draw a considerable amount of current. Make sure your system
 #define Z_PROBE_XY_SPEED 150
 #define Z_PROBE_SWITCHING_DISTANCE 1
 #define Z_PROBE_REPETITIONS 1
-#define Z_PROBE_HEIGHT 40
+#define Z_PROBE_HEIGHT 1
 #define Z_PROBE_DELAY 0
 #define Z_PROBE_START_SCRIPT ""
 #define Z_PROBE_FINISHED_SCRIPT ""
@@ -554,7 +554,7 @@ WARNING: Servos can draw a considerable amount of current. Make sure your system
 #define LANGUAGE_CZ_ACTIVE 0
 #define LANGUAGE_PL_ACTIVE 1
 #define LANGUAGE_TR_ACTIVE 1
-#define UI_PRINTER_NAME "R-CNC"
+#define UI_PRINTER_NAME "RS-CNC"
 #define UI_PRINTER_COMPANY "MakerFr.com"
 #define UI_PAGES_DURATION 4000
 #define UI_SPEEDDEPENDENT_POSITIONING 0
