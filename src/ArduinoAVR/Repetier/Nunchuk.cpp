@@ -9,6 +9,19 @@ static NunchukDeviceClass NunchukDevice;
 
 void NunchukDeviceClass::init() {
     Wire.begin();
+
+    // Init the Nunchuk and disable the encryption
+    Wire.beginTransmission(NUNCHUK_DEVICE_ADDR);
+    Wire.write(0xF0);
+    Wire.write(0x55);
+    Wire.endTransmission();
+    delay(10);
+
+    Wire.beginTransmission(NUNCHUK_DEVICE_ADDR);
+    Wire.write(0xFB);
+    Wire.write(0x00);
+    Wire.endTransmission();
+    delay(10);
 }
 
 void NunchukDeviceClass::loop() {
@@ -18,9 +31,7 @@ void NunchukDeviceClass::loop() {
     switch(state)
     {
         case 0U:     // Wait 100ms - Sampling interval
-        case 2U:     // Wait 10ms  - Initializing Nunchuk
-        case 4U:     // Wait 10ms  - Disabling encryption
-        case 6U:     // Wait 5ms   - Data availability
+        case 2U:     // Wait 5ms   - Data availability
         default:
             if(curtime < nexttime) {
                 return;                     // Not ready yet
@@ -29,26 +40,7 @@ void NunchukDeviceClass::loop() {
             }
             break;
 
-        case 1U:
-            // Init the Nunchuk and disable the encryption
-            Wire.beginTransmission(NUNCHUK_DEVICE_ADDR);
-            Wire.write(0xF0);
-            Wire.write(0x55);
-            Wire.endTransmission();
-            nexttime = curtime + 10U;
-            state++;
-            break;
-        
-        case 3U:
-            Wire.beginTransmission(NUNCHUK_DEVICE_ADDR);
-            Wire.write(0xFB);
-            Wire.write(0x00);
-            Wire.endTransmission();
-            nexttime = curtime + 10U;
-            state++;
-            break;
-
-        case 5U:     // Start request
+        case 1U:     // Start request
             Wire.beginTransmission(NUNCHUK_DEVICE_ADDR);
             Wire.write(0x00);
             Wire.endTransmission();
@@ -56,14 +48,14 @@ void NunchukDeviceClass::loop() {
             state++;
             break;
 
-        case 7U:     // Read the results
+        case 3U:     // Read the results
             byte raw[6];
 
             Wire.requestFrom(NUNCHUK_DEVICE_ADDR, 6, true);
 
             if(Wire.available() == 6) {
                 byte index = 0;
-    
+
                 while(index < 6) {
                     raw[index++] = Wire.read();
                 }
