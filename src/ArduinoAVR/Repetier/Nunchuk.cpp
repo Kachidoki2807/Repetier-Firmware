@@ -190,8 +190,8 @@ void NunchukClass::init() {
 
 void NunchukClass::loop() {
 
-    // If printing or milling, skip all
-    if(Printer::isPrinting()) {
+    // If milling, skip all
+    if(CNCDriver::spindleRpm != 0) {
         return;
     }
 
