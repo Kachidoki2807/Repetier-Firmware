@@ -1286,8 +1286,9 @@ void Printer::setup() {
         uid.showLanguageSelectionWizard();
     }
 #endif // EEPROM_MODE
-
+#if FEATURE_NUNCHUK
     Nunchuk.init();
+#endif
 }
 
 void Printer::defaultLoopActions() {
@@ -1311,8 +1312,9 @@ void Printer::defaultLoopActions() {
 #if defined(EEPROM_AVAILABLE) && EEPROM_AVAILABLE == EEPROM_SDCARD
     HAL::syncEEPROM();
 #endif
-
+#if FEATURE_NUNCHUK
     Nunchuk.loop();
+#endif
 
     DEBUG_MEMORY;
 }

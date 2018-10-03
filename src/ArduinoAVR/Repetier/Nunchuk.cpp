@@ -1,6 +1,7 @@
 #include <Wire.h>
 #include "Repetier.h"
 
+#if FEATURE_NUNCHUK
 /****************************************************************************************
  NUNCHUK DEVICE CLASS
 ****************************************************************************************/
@@ -63,7 +64,7 @@ void NunchukDeviceClass::loop() {
                 /* Data parsing */
                 byte joyX   =   raw[0];
                 byte joyY   =   raw[1];
-#ifdef NUNCHUK_DEVICE_ENABLE_ACCEL
+#if NUNCHUK_DEVICE_ENABLE_ACCEL
                 int  accelX =  (raw[2] << 2) | ((raw[5] >> 2) & 0x03);
                 int  accelY =  (raw[3] << 2) | ((raw[5] >> 4) & 0x03);
                 int  accelZ =  (raw[4] << 2) | ((raw[5] >> 6) & 0x03);
@@ -81,7 +82,7 @@ void NunchukDeviceClass::loop() {
                     newData = true;
                 }
 
-#ifdef NUNCHUK_DEVICE_ENABLE_ACCEL
+#if NUNCHUK_DEVICE_ENABLE_ACCEL
                 if(this->accelX != accelX) {
                     this->accelX = accelX;
                     newData = true;
@@ -250,3 +251,5 @@ void NunchukClass::loop() {
         startJog();
     }
 }
+
+#endif

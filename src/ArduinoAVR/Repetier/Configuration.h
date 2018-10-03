@@ -357,6 +357,8 @@ It also can add a delay to wait for spindle to run on full speed.
 // ##                           Movement settings                                          ##
 // ##########################################################################################
 
+#define FEATURE_NUNCHUK 1
+
 #define FEATURE_BABYSTEPPING 1
 #define BABYSTEP_MULTIPLICATOR 1
 

@@ -1,7 +1,7 @@
 #ifndef _NUNCHUK_H
 #define _NUNCHUK_H
 
-//#define NUNCHUK_DEVICE_ENABLE_ACCEL
+#define NUNCHUK_DEVICE_ENABLE_ACCEL 0
 
 class NunchukDeviceClass {
 private:
@@ -11,7 +11,7 @@ private:
     millis_t nexttime;
     byte joyX;
     byte joyY;
-#ifdef NUNCHUK_DEVICE_ENABLE_ACCEL
+#if NUNCHUK_DEVICE_ENABLE_ACCEL
     int  accelX;
     int  accelY;
     int  accelZ;
@@ -31,7 +31,7 @@ public:
 
     inline byte getJoyX()   { return joyX; };
     inline byte getJoyY()   { return joyY; };
-#ifdef NUNCHUK_DEVICE_ENABLE_ACCEL
+#if NUNCHUK_DEVICE_ENABLE_ACCEL
     inline int  getAccelX() { return accelX; };
     inline int  getAccelY() { return accelY; };
     inline int  getAccelZ() { return accelZ; };
