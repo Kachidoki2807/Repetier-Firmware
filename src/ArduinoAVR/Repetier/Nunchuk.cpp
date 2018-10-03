@@ -14,18 +14,28 @@ static NunchukDeviceClass NunchukDevice;
 void NunchukDeviceClass::init() {
     Wire.begin();
 
-    // Init the Nunchuk and disable the encryption
+    // Check if the Nunchuk is plugged
     Wire.beginTransmission(NUNCHUK_DEVICE_ADDR);
-    Wire.write(0xF0);
-    Wire.write(0x55);
-    Wire.endTransmission();
-    delay(10);
+    if(Wire.endTransmission() == 0) {
+        /* Nunchuk is plugged */
+        plugged = true;
+    }
 
-    Wire.beginTransmission(NUNCHUK_DEVICE_ADDR);
-    Wire.write(0xFB);
-    Wire.write(0x00);
-    Wire.endTransmission();
-    delay(10);
+    if(plugged) {
+        // Init the Nunchuk and disable the encryption
+        Wire.beginTransmission(NUNCHUK_DEVICE_ADDR);
+        Wire.write(0xF0);
+        Wire.write(0x55);
+        Wire.endTransmission();
+
+        delay(10);
+
+        Wire.beginTransmission(NUNCHUK_DEVICE_ADDR);
+        Wire.write(0xFB);
+        Wire.write(0x00);
+        Wire.endTransmission();
+        delay(10);
+    }
 }
 
 void NunchukDeviceClass::loop() {
@@ -189,6 +199,11 @@ void NunchukClass::init() {
 }
 
 void NunchukClass::loop() {
+
+    // If Nunchuk is not plugged, skip all
+    if(!NunchukDevice.isPlugged()) {
+        return;
+    }
 
     // If milling, skip all
     if(CNCDriver::spindleRpm != 0) {

@@ -22,11 +22,12 @@ private:
     bool btnC;
     bool newData;
     bool calibrated;
+    bool plugged;
 
 protected:
 
 public:
-    NunchukDeviceClass() : state(0), nexttime(0), newData(false), calibrated(false) { };
+    NunchukDeviceClass() : state(0), nexttime(0), newData(false), calibrated(false), plugged(false) { };
     ~NunchukDeviceClass() {};
 
     void init();
@@ -42,6 +43,7 @@ public:
     inline bool getBtnZ()   { return btnZ; };
     inline bool getBtnC()   { return btnC; };
     bool hasNewData();
+    inline bool isPlugged() { return plugged; };
 };
 
 class NunchukClass {
