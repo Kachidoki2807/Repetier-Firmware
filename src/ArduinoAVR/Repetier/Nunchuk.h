@@ -9,6 +9,8 @@ private:
 
     byte state;
     millis_t nexttime;
+    byte joyXcal;
+    byte joyYcal;
     byte joyX;
     byte joyY;
 #if NUNCHUK_DEVICE_ENABLE_ACCEL
@@ -19,11 +21,12 @@ private:
     bool btnZ;
     bool btnC;
     bool newData;
+    bool calibrated;
 
 protected:
 
 public:
-    NunchukDeviceClass() : state(0), nexttime(0), newData(false) { };
+    NunchukDeviceClass() : state(0), nexttime(0), newData(false), calibrated(false) { };
     ~NunchukDeviceClass() {};
 
     void init();

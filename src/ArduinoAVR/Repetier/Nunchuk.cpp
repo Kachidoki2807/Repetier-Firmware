@@ -6,6 +6,9 @@
  NUNCHUK DEVICE CLASS
 ****************************************************************************************/
 
+#define INTERP_MIDDLE_VALUE (127u)
+#define INTERP_THRESHOLD     (16u)
+
 static NunchukDeviceClass NunchukDevice;
 
 void NunchukDeviceClass::init() {
@@ -72,14 +75,20 @@ void NunchukDeviceClass::loop() {
                 bool btnZ   = ((raw[5] >> 0) & 0x01) ^ 0x01;
                 bool btnC   = ((raw[5] >> 1) & 0x01) ^ 0x01;
 
-                if(this->joyX != joyX) {
-                    this->joyX = joyX;
-                    newData = true;
-                }
+                if(calibrated) {
+                    if(this->joyX != joyX) {
+                        this->joyX = joyX + joyXcal;
+                        newData = true;
+                    }
 
-                if(this->joyY != joyY) {
-                    this->joyY = joyY;
-                    newData = true;
+                    if(this->joyY != joyY) {
+                        this->joyY = joyY + joyYcal;
+                        newData = true;
+                    }
+                } else {
+                    joyXcal = INTERP_MIDDLE_VALUE - joyX;
+                    joyYcal = INTERP_MIDDLE_VALUE - joyY;
+                    calibrated = true;
                 }
 
 #if NUNCHUK_DEVICE_ENABLE_ACCEL
@@ -131,8 +140,6 @@ bool NunchukDeviceClass::hasNewData() {
 NunchukClass Nunchuk;
 
 void NunchukClass::interp(const t_InterpAxis axis, byte in, float &feedrate, int32_t &moveLength) {
-    #define INTERP_MIDDLE_VALUE (127u)
-    #define INTERP_THRESHOLD     (16u)
 
     static const struct {
         int32_t below;
