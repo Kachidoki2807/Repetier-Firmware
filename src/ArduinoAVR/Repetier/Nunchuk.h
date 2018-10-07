@@ -9,8 +9,8 @@ private:
 
     byte state;
     millis_t nexttime;
-    byte joyXcal;
-    byte joyYcal;
+    int joyXcal;
+    int joyYcal;
     byte joyX;
     byte joyY;
 #if NUNCHUK_DEVICE_ENABLE_ACCEL

@@ -87,17 +87,17 @@ void NunchukDeviceClass::loop() {
 
                 if(calibrated) {
                     if(this->joyX != joyX) {
-                        this->joyX = joyX + joyXcal;
+                        this->joyX = ((int)joyX + joyXcal) < 0 ? 0 : (int)joyX + joyXcal;
                         newData = true;
                     }
 
                     if(this->joyY != joyY) {
-                        this->joyY = joyY + joyYcal;
+                        this->joyY = ((int)joyY + joyYcal) < 0 ? 0 : (int)joyY + joyYcal;
                         newData = true;
                     }
                 } else {
-                    joyXcal = INTERP_MIDDLE_VALUE - joyX;
-                    joyYcal = INTERP_MIDDLE_VALUE - joyY;
+                    joyXcal = (int)INTERP_MIDDLE_VALUE - joyX;
+                    joyYcal = (int)INTERP_MIDDLE_VALUE - joyY;
                     calibrated = true;
                 }
 
